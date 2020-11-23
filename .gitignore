@@ -1,0 +1,6 @@
+*.json
+.vs/
+bin/
+obj/
+build/
+README.md
