@@ -9,6 +9,7 @@ namespace PixelBot.Json
     {
         public ulong ID { get; set; }
         public int XP { get; set; }
+        public byte Rank { get; set; }
 
         public static List<Member> PullData()
         {
@@ -27,11 +28,13 @@ namespace PixelBot.Json
         {
             ID = id;
             XP = 0;
+            Rank = 0;
         }
         public Member(ulong id, int xp) // Direkt az XP feljegyzésére létrehozott konstruktor. Kezdeti XP értéket kap.
         {
             ID = id;
             XP = xp;
+            Rank = 0;
         }
     }
 }
