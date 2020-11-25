@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Discord;
 using Discord.WebSocket;
 using PixelBot.Json;
@@ -22,14 +23,17 @@ namespace PixelBot.Commands.Main
         public async static void DoCommand(SocketMessage message)
         {
             var members = Member.PullData();
-            members.OrderByDescending(x => x.XP);
             int xp = members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP;
             string progressBar = "";
             int partXp = xp;
             int rankup = 30;
             int totalXpNeeded = rankup;
             byte rank = 0;
-            int position = members.IndexOf(members.Find(x => x.ID == message.Author.Id)) + 1;
+
+            List<Member> orderedMembers = new List<Member>();
+            foreach (var i in members.OrderByDescending(x => x.XP))
+                orderedMembers.Add(i);
+            int position = orderedMembers.IndexOf(members.Find(x => x.ID == message.Author.Id)) + 1;
 
             while (partXp >= rankup)
             {
