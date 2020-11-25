@@ -7,30 +7,12 @@ using Discord;
 using Discord.WebSocket;
 
 using PixelBot.Json;
+using PixelBot.Events;
 using PixelBot.Commands.Dev;
+using PixelBot.Commands.Main;
 
 namespace PixelBot
 {
-    public class Role
-    {
-        public ulong[] Admin { get; set; }
-    }
-    public class Channel
-    {
-        public ulong[] BotTerminal { get; set; }
-    }
-    public class BaseConfig
-    {
-        public string Token { get; set; }
-        public char Prefix { get; set; }
-        public Role Roles { get; set; }
-        public Channel Channels { get; set; }
-
-        public static BaseConfig GetConfig()
-        {
-            return JsonSerializer.Deserialize<BaseConfig>(File.ReadAllText("BaseConfig.json"));
-        }
-    }
     class Program
     {
         public static DiscordSocketClient _client;
@@ -55,17 +37,9 @@ namespace PixelBot
 
         private Task EventHandler(SocketMessage message)
         {
-            var members = Member.PullData();
-            bool memberFound = false;
-            for (int i = 0; i < members.Count; i++)
-                if (members[i].ID == message.Author.Id)
-                {
-                    members[i].XP++;
-                    memberFound = true;
-                }
-            if (!memberFound)
-                members.Add(new Member(message.Author.Id, 1));
-            Member.PushData(members);
+            if (message.Author.IsBot)
+                return Task.CompletedTask;
+            Xp.DoEvent(message);
 
             return Task.CompletedTask;
         }
@@ -75,10 +49,13 @@ namespace PixelBot
                 return Task.CompletedTask;
             string firstWord = message.Content.Split()[0];
             string command = firstWord.Substring(1, firstWord.Length - 1).ToLower();
-            
+
             // Dev
-            //if (Test.Aliases().Contains(command) && Test.HasPerm(message))
-            //    Test.DoCommand(message);
+            if (Test.Aliases().Contains(command) && Test.HasPerm(message))
+                Test.DoCommand(message);
+            // Main
+            if (Rank.Aliases().Contains(command))
+                Rank.DoCommand(message);
 
             return Task.CompletedTask;
         }
