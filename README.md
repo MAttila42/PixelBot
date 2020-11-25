@@ -1,2 +1,2 @@
-# PixelBot Pre
-PixelBot's pre versions
+# PixelBot
+Official Discord Bot for the Lyedlik: The Pixel Game project
