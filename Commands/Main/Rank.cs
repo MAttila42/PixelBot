@@ -44,10 +44,10 @@ namespace PixelBot.Commands.Main
             }
 
             byte progress = (byte)((double)partXp / rankup * 100);
-            progress /= 2;
+            progress = (byte)(progress / 100.0 * 32);
             for (int i = 0; i < progress; i++)
                 progressBar += "█";
-            for (int i = 0; i < 50 - progress; i++)
+            for (int i = 0; i < 32 - progress; i++)
                 progressBar += " ";
 
             var embed = new EmbedBuilder()
