@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Discord;
 using Discord.WebSocket;
@@ -25,7 +26,13 @@ namespace PixelBot.Commands.Main
             await Program.Log("command", message);
 
             var members = Member.PullData();
-            int xp = members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP;
+            int xp;
+            try { xp = members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP; }
+            catch (Exception) 
+            {
+                members.Add(new Member(message.Author.Id));
+                xp = members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP;
+            }
             string progressBar = "";
             int partXp = xp;
             int rankup = 30;

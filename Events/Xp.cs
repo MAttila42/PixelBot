@@ -53,7 +53,10 @@ namespace PixelBot.Events
                     .WithThumbnailUrl(message.Author.GetAvatarUrl())
                     .WithColor(new Color(0xFFCC00)).Build();
 
-                foreach (var id in BaseConfig.GetConfig().Channels.LevelUp)
+                var channels = BaseConfig.GetConfig().Channels.LevelUp;
+                if (channels[0] == 0)
+                    return;
+                foreach (var id in channels)
                     await ((IMessageChannel)Program._client.GetChannel(id)).SendMessageAsync(
                         null,
                         embed: embed)
