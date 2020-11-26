@@ -22,6 +22,8 @@ namespace PixelBot.Commands.Main
         }
         public async static void DoCommand(SocketMessage message)
         {
+            await Program.Log("command", message);
+
             var members = Member.PullData();
             int xp = members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP;
             string progressBar = "";
@@ -65,8 +67,6 @@ namespace PixelBot.Commands.Main
                 null,
                 embed: embed)
                 .ConfigureAwait(false);
-
-            await Program.Log("command", message);
         }
     }
 }

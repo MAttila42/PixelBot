@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Text.Json;
-using System.IO;
 using Discord;
 using Discord.WebSocket;
 
@@ -60,19 +58,39 @@ namespace PixelBot
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Meghatározható típusú logolás a terminálba és a BaseConfigban beállított szobákba.
+        /// </summary>
+        /// <param name="mode">command, rankup</param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public static async Task Log(string mode, SocketMessage message)
         {
             Console.Write(DateTime.Now.ToString("yyyy.MM.dd. HH:mm:ss") + " ");
+            string output = "";
             switch (mode)
             {
                 case "command":
-                    string output = $"Command run - {message.Author.Username}#{message.Author.Discriminator} in #{message.Channel}: {message.Content}";
-                    Console.WriteLine(output);
-                    foreach (var id in BaseConfig.GetConfig().Channels.BotTerminal)
-                        await ((IMessageChannel)_client.GetChannel(id)).SendMessageAsync(output);
+                    output = $"Command run - {message.Author.Username}#{message.Author.Discriminator} in #{message.Channel}: {message.Content}";
                     break;
+                case "rankup":
+                    var members = Member.PullData();
+                    output = $"Event - {message.Author.Username}#{message.Author.Discriminator} ranked up: {members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].Rank + 1}";
+                    break;
+
+                default:
+                    return;
             }
+            foreach (var id in BaseConfig.GetConfig().Channels.BotTerminal)
+                await ((IMessageChannel)_client.GetChannel(id)).SendMessageAsync(output);
+            Console.WriteLine(output);
         }
+        /// <summary>
+        /// ID, ping, név alapján megkeresi a keresett felhasználót és visszaadja az ID-jét.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inputName"></param>
+        /// <returns></returns>
         public static ulong GetUserId(SocketMessage message, string inputName)
         {
             ulong id = 0;
