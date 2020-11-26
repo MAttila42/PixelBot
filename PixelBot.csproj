@@ -15,4 +15,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Fun\" />
+  </ItemGroup>
+
 </Project>

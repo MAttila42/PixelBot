@@ -7,6 +7,7 @@ using Discord.WebSocket;
 using PixelBot.Json;
 using PixelBot.Events;
 using PixelBot.Commands.Dev;
+using PixelBot.Commands.Fun;
 using PixelBot.Commands.Main;
 
 namespace PixelBot
@@ -51,6 +52,9 @@ namespace PixelBot
             // Dev
             if (Test.Aliases().Contains(command) && Test.HasPerm(message))
                 Test.DoCommand(message);
+            // Fun
+            if (Minesweeper.Aliases().Contains(command))
+                Minesweeper.DoCommand(message);
             // Main
             if (Rank.Aliases().Contains(command))
                 Rank.DoCommand(message);
