@@ -50,13 +50,13 @@ namespace PixelBot
             string command = firstWord.Substring(1, firstWord.Length - 1).ToLower();
 
             // Dev
-            if (Test.Aliases().Contains(command) && Test.HasPerm(message))
+            if (Test.Aliases.Contains(command) && Test.HasPerm(message))
                 Test.DoCommand(message);
             // Fun
-            if (Minesweeper.Aliases().Contains(command))
+            if (Minesweeper.Aliases.Contains(command))
                 Minesweeper.DoCommand(message);
             // Main
-            if (Rank.Aliases().Contains(command))
+            if (Rank.Aliases.Contains(command))
                 Rank.DoCommand(message);
 
             return Task.CompletedTask;

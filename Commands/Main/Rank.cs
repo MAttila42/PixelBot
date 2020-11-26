@@ -9,18 +9,14 @@ namespace PixelBot.Commands.Main
 {
     class Rank
     {
-        public static string[] Aliases()
+        public static string[] Aliases =
         {
-            string[] aliases =
-            {
-                "rank",
-                "level",
-                "lvl",
-                "xp",
-                "szint"
-            };
-            return aliases;
-        }
+            "rank",
+            "level",
+            "lvl",
+            "xp",
+            "szint"
+        };
         public async static void DoCommand(SocketMessage message)
         {
             await Program.Log("command", message);

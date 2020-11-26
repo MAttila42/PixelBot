@@ -6,18 +6,14 @@ namespace PixelBot.Commands.Fun
 {
     class Minesweeper
     {
-        public static string[] Aliases()
+        public static string[] Aliases =
         {
-            string[] aliases =
-            {
-                "minesweeper",
-                "ms",
-                "aknakereso",
-                "aknakereső",
-                "ak"
-            };
-            return aliases;
-        }
+            "minesweeper",
+            "ms",
+            "aknakereso",
+            "aknakereső",
+            "ak"
+        };
 
         public static async void DoCommand(SocketMessage message)
         {
