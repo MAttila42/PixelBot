@@ -54,13 +54,12 @@ namespace PixelBot.Events
                     .WithColor(new Color(0xFFCC00)).Build();
 
                 var channels = BaseConfig.GetConfig().Channels.LevelUp;
-                if (channels[0] == 0)
-                    return;
-                foreach (var id in channels)
-                    await ((IMessageChannel)Program._client.GetChannel(id)).SendMessageAsync(
-                        null,
-                        embed: embed)
-                        .ConfigureAwait(false);
+                if (channels[0] != 0)
+                    foreach (var id in channels)
+                        await ((IMessageChannel)Program._client.GetChannel(id)).SendMessageAsync(
+                            null,
+                            embed: embed)
+                            .ConfigureAwait(false);
             }
 
             members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].Rank = rank;
