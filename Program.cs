@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Discord;
 using Discord.WebSocket;
 
@@ -78,7 +79,7 @@ namespace PixelBot
                     output = $"Command run - {message.Author.Username}#{message.Author.Discriminator} in #{message.Channel}: {message.Content}";
                     break;
                 case "rankup":
-                    var members = Member.PullData();
+                    var members = Members.PullData();
                     output = $"Event - {message.Author.Username}#{message.Author.Discriminator} ranked up: {members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].Rank + 1}";
                     break;
 

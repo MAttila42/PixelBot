@@ -21,24 +21,25 @@ namespace PixelBot.Commands.Main
         {
             await Program.Log("command", message);
 
-            var members = Member.PullData();
+            var members = Members.PullData();
             int xp;
-            try { xp = members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP; }
-            catch (Exception) 
+            int memberIndex = Members.GetMemberIndex(message, members, message.Author.Id.ToString());
+            if (memberIndex == -1)
             {
-                members.Add(new Member(message.Author.Id));
-                xp = members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP;
+                memberIndex = members.Count();
+                members.Add(new Members(message.Author.Id));
             }
+            xp = members[memberIndex].XP;
             string progressBar = "";
             int partXp = xp;
             int rankup = 30;
             int totalXpNeeded = rankup;
             byte rank = 0;
 
-            List<Member> orderedMembers = new List<Member>();
+            List<Members> orderedMembers = new List<Members>();
             foreach (var i in members.OrderByDescending(x => x.XP))
                 orderedMembers.Add(i);
-            int position = orderedMembers.IndexOf(members.Find(x => x.ID == message.Author.Id)) + 1;
+            int position = Members.GetMemberIndex(message, orderedMembers, message.Author.Id.ToString()) + 1;
 
             while (partXp >= rankup)
             {

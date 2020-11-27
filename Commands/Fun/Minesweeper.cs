@@ -136,9 +136,12 @@ namespace PixelBot.Commands.Fun
                 msg += i + "\n";
 
             if (msg.Length > 2000)
+            {
                 await message.Channel.SendMessageAsync("❌ 2000+ characters!");
+                return;
+            }
 
-            await message.Channel.SendMessageAsync(msg.ToString());
+            await message.Channel.SendMessageAsync(msg);
         }
     }
 }
