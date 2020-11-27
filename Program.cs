@@ -57,6 +57,8 @@ namespace PixelBot
             if (Minesweeper.Aliases.Contains(command))
                 Minesweeper.DoCommand(message);
             // Main
+            if (Leaderboard.Aliases.Contains(command))
+                Leaderboard.DoCommand(message);
             if (Rank.Aliases.Contains(command))
                 Rank.DoCommand(message);
 
@@ -117,28 +119,22 @@ namespace PixelBot
                         bool userMissing = true;
                         bool multipleFound = false;
                         if (userStr.Length == 2)
-                        {
                             foreach (var user in users)
-                            {
                                 if (user.Username == userStr.First() && user.Discriminator == userStr.Last())
                                 {
                                     id = user.Id;
                                     userMissing = false;
                                     break;
                                 }
-                            }
-                        }
                         if (userMissing && userStr.Length == 2)
                         {
                             int usersFound = 0;
                             foreach (var user in users)
-                            {
                                 if (user.Username.ToLower() == userStr.First().ToLower() && user.Discriminator == userStr.Last())
                                 {
                                     id = user.Id;
                                     usersFound++;
                                 }
-                            }
                             if (usersFound == 1)
                                 userMissing = false;
                             else if (usersFound > 1)
@@ -148,13 +144,11 @@ namespace PixelBot
                         {
                             int usersFound = 0;
                             foreach (var user in users)
-                            {
                                 if (user.Username == userStr.First())
                                 {
                                     id = user.Id;
                                     usersFound++;
                                 }
-                            }
                             if (usersFound == 1)
                                 userMissing = false;
                             else if (usersFound > 1)
@@ -164,13 +158,11 @@ namespace PixelBot
                         {
                             int usersFound = 0;
                             foreach (var user in users)
-                            {
                                 if (user.Username.ToLower() == userStr.First().ToLower())
                                 {
                                     id = user.Id;
                                     usersFound++;
                                 }
-                            }
                             if (usersFound == 1)
                                 userMissing = false;
                             else if (usersFound > 1)
