@@ -40,6 +40,7 @@ namespace PixelBot.Commands.Main
             foreach (var i in members.OrderByDescending(x => x.XP))
                 orderedMembers.Add(i);
             int position = Members.GetMemberIndex(message, orderedMembers, message.Author.Id.ToString()) + 1;
+            int percent = (int)((double)position / members.Count() * 100);
 
             while (partXp >= rankup)
             {
@@ -63,7 +64,7 @@ namespace PixelBot.Commands.Main
                         .WithName(message.Author.Username)
                         .WithIconUrl("https://cdn.discordapp.com/attachments/781164873458778133/781180739089334302/XP.png");
                 })
-                .WithDescription($":trophy: Position: #**{position}**\n:beginner: XP: **{xp}** /{totalXpNeeded}\n:medal: Rank: **{rank}**\n\nProgress:\n`{progressBar}`")
+                .WithDescription($":trophy: Position: #**{position}** (Top **{percent}**%)\n:beginner: XP: **{xp}** /{totalXpNeeded}\n:medal: Rank: **{rank}**\n\nProgress:\n`{progressBar}`")
                 .WithFooter(((SocketGuildChannel)message.Channel).Guild.Name)
                 .WithThumbnailUrl(message.Author.GetAvatarUrl())
                 .WithColor(new Color(0xFFCC00)).Build();
