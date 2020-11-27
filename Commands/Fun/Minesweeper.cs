@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Discord.WebSocket;
 
@@ -20,9 +21,9 @@ namespace PixelBot.Commands.Fun
             await Program.Log("command", message);
 
             Random r = new Random();
-            int row = r.Next(6, 15);
-            int column = r.Next(6, 15);
-            int mines = r.Next(row * column / 10, row * column / 3);
+            int row = r.Next(6, 10);
+            int column = r.Next(6, 10);
+            int mines = r.Next(row * column / 10, row * column / 4);
             int help = 1;
             string[] input = message.Content.Split();
 
@@ -135,9 +136,9 @@ namespace PixelBot.Commands.Fun
             foreach (var i in output)
                 msg += i + "\n";
 
-            if (msg.Length > 2000)
+            if (msg.Count(x => x == '|') / 4 > 100)
             {
-                await message.Channel.SendMessageAsync("❌ 2000+ characters!");
+                await message.Channel.SendMessageAsync("❌ 100+ fields!");
                 return;
             }
 
