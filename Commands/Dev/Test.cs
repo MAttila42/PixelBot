@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Discord;
 using Discord.WebSocket;
 using PixelBot.Json;
 
@@ -8,15 +7,11 @@ namespace PixelBot.Commands.Dev
 {
     public class Test
     {
-        public static string[] Aliases()
+        public static string[] Aliases =
         {
-            string[] aliases =
-            {
-                "test",
-                "teszt"
-            };
-            return aliases;
-        }
+            "test",
+            "teszt"
+        };
         public static bool HasPerm(SocketMessage message)
         {
             bool hasPerm = false;
@@ -32,7 +27,12 @@ namespace PixelBot.Commands.Dev
         public static async void DoCommand(SocketMessage message)
         {
             await Program.Log("command", message);
-            await message.Channel.SendMessageAsync((await message.Channel.GetMessagesAsync(10).FlattenAsync()).Where(x => x.Author.Id == message.Author.Id).ElementAt(1).Content);
+
+            string output = "";
+            for (int i = 0; i < 2000; i++)
+                output += "a";
+
+            await message.Channel.SendMessageAsync(output);
         }
     }
 }

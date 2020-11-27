@@ -23,11 +23,16 @@ namespace PixelBot.Events
                 BaseConfig.GetConfig().Channels.BotChannel.Contains(message.Channel.Id))
                 return;
 
-            var members = Member.PullData();
-            try { members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP++; }
-            catch (Exception) { members.Add(new Member(message.Author.Id, 1)); }
+            var members = Members.PullData();
+            int memberIndex = Members.GetMemberIndex(message, members, message.Author.Id.ToString());
+            if (memberIndex == -1)
+            {
+                memberIndex = members.Count();
+                members.Add(new Members(message.Author.Id));
+            }
+            members[memberIndex].XP++;
 
-            int xp = members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP;
+            int xp = members[memberIndex].XP;
             int rankup = 30;
             byte rank = 0;
             while (xp >= rankup)
@@ -37,7 +42,7 @@ namespace PixelBot.Events
                 rankup += rankup / 5;
             }
 
-            if (rank > members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].Rank)
+            if (rank > members[memberIndex].Rank)
             {
                 await Program.Log("rankup", message);
 
@@ -54,18 +59,17 @@ namespace PixelBot.Events
                     .WithColor(new Color(0xFFCC00)).Build();
 
                 var channels = BaseConfig.GetConfig().Channels.LevelUp;
-                if (channels[0] == 0)
-                    return;
-                foreach (var id in channels)
-                    await ((IMessageChannel)Program._client.GetChannel(id)).SendMessageAsync(
-                        null,
-                        embed: embed)
-                        .ConfigureAwait(false);
+                if (channels[0] != 0)
+                    foreach (var id in channels)
+                        await ((IMessageChannel)Program._client.GetChannel(id)).SendMessageAsync(
+                            null,
+                            embed: embed)
+                            .ConfigureAwait(false);
             }
 
-            members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].Rank = rank;
+            members[memberIndex].Rank = rank;
 
-            Member.PushData(members);
+            Members.PushData(members);
         }
     }
 }

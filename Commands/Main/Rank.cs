@@ -9,40 +9,38 @@ namespace PixelBot.Commands.Main
 {
     class Rank
     {
-        public static string[] Aliases()
+        public static string[] Aliases =
         {
-            string[] aliases =
-            {
-                "rank",
-                "level",
-                "lvl",
-                "xp",
-                "szint"
-            };
-            return aliases;
-        }
+            "rank",
+            "level",
+            "lvl",
+            "xp",
+            "szint"
+        };
         public async static void DoCommand(SocketMessage message)
         {
             await Program.Log("command", message);
 
-            var members = Member.PullData();
+            var members = Members.PullData();
             int xp;
-            try { xp = members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP; }
-            catch (Exception) 
+            int memberIndex = Members.GetMemberIndex(message, members, message.Author.Id.ToString());
+            if (memberIndex == -1)
             {
-                members.Add(new Member(message.Author.Id));
-                xp = members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].XP;
+                memberIndex = members.Count();
+                members.Add(new Members(message.Author.Id));
             }
+            xp = members[memberIndex].XP;
             string progressBar = "";
             int partXp = xp;
             int rankup = 30;
             int totalXpNeeded = rankup;
             byte rank = 0;
 
-            List<Member> orderedMembers = new List<Member>();
+            List<Members> orderedMembers = new List<Members>();
             foreach (var i in members.OrderByDescending(x => x.XP))
                 orderedMembers.Add(i);
-            int position = orderedMembers.IndexOf(members.Find(x => x.ID == message.Author.Id)) + 1;
+            int position = Members.GetMemberIndex(message, orderedMembers, message.Author.Id.ToString()) + 1;
+            int percent = (int)((double)position / members.Count() * 100);
 
             while (partXp >= rankup)
             {
@@ -66,7 +64,7 @@ namespace PixelBot.Commands.Main
                         .WithName(message.Author.Username)
                         .WithIconUrl("https://cdn.discordapp.com/attachments/781164873458778133/781180739089334302/XP.png");
                 })
-                .WithDescription($":trophy: Position: #**{position}**\n:beginner: XP: **{xp}** /{totalXpNeeded}\n:medal: Rank: **{rank}**\n\nProgress:\n`{progressBar}`")
+                .WithDescription($":trophy: Position: #**{position}** (Top **{percent}**%)\n:beginner: XP: **{xp}** /{totalXpNeeded}\n:medal: Rank: **{rank}**\n\nProgress:\n`{progressBar}`")
                 .WithFooter(((SocketGuildChannel)message.Channel).Guild.Name)
                 .WithThumbnailUrl(message.Author.GetAvatarUrl())
                 .WithColor(new Color(0xFFCC00)).Build();

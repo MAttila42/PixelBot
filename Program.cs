@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Discord;
 using Discord.WebSocket;
 
 using PixelBot.Json;
 using PixelBot.Events;
 using PixelBot.Commands.Dev;
+using PixelBot.Commands.Fun;
 using PixelBot.Commands.Main;
 
 namespace PixelBot
@@ -49,10 +51,13 @@ namespace PixelBot
             string command = firstWord.Substring(1, firstWord.Length - 1).ToLower();
 
             // Dev
-            if (Test.Aliases().Contains(command) && Test.HasPerm(message))
+            if (Test.Aliases.Contains(command) && Test.HasPerm(message))
                 Test.DoCommand(message);
+            // Fun
+            if (Minesweeper.Aliases.Contains(command))
+                Minesweeper.DoCommand(message);
             // Main
-            if (Rank.Aliases().Contains(command))
+            if (Rank.Aliases.Contains(command))
                 Rank.DoCommand(message);
 
             return Task.CompletedTask;
@@ -74,7 +79,7 @@ namespace PixelBot
                     output = $"Command run - {message.Author.Username}#{message.Author.Discriminator} in #{message.Channel}: {message.Content}";
                     break;
                 case "rankup":
-                    var members = Member.PullData();
+                    var members = Members.PullData();
                     output = $"Event - {message.Author.Username}#{message.Author.Discriminator} ranked up: {members[members.IndexOf(members.Find(x => x.ID == message.Author.Id))].Rank + 1}";
                     break;
 
