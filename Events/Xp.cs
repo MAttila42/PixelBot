@@ -51,7 +51,7 @@ namespace PixelBot.Events
                     {
                         author
                             .WithName("Rank Up")
-                            .WithIconUrl("https://cdn.discordapp.com/attachments/781164873458778133/781180684185108590/LevelUp.png");
+                            .WithIconUrl("https://cdn.discordapp.com/attachments/781164873458778133/781906580559233034/LevelUp.png");
                     })
                     .WithDescription($"Congratulations **{message.Author.Mention}**! You ranked up.\nNew rank: **{rank}**")
                     .WithFooter(((SocketGuildChannel)message.Channel).Guild.Name)

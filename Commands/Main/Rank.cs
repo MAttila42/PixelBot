@@ -61,7 +61,7 @@ namespace PixelBot.Commands.Main
                 {
                     author
                         .WithName(message.Author.Username)
-                        .WithIconUrl("https://cdn.discordapp.com/attachments/781164873458778133/781180739089334302/XP.png");
+                        .WithIconUrl("https://cdn.discordapp.com/attachments/781164873458778133/781906608376381470/XP.png");
                 })
                 .WithDescription($":trophy: Position: #**{position}** (Top **{percent}**%)\n:beginner: XP: **{xp}** /{totalXpNeeded}\n:medal: Rank: **{rank}**\n\nProgress:\n`{progressBar}`")
                 .WithFooter(((SocketGuildChannel)message.Channel).Guild.Name)

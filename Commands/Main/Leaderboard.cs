@@ -69,7 +69,7 @@ namespace PixelBot.Commands.Main
                 {
                     author
                         .WithName("Leaderboard")
-                        .WithIconUrl("https://cdn.discordapp.com/attachments/781164873458778133/781896533464449035/Leaderboard.png");
+                        .WithIconUrl("https://cdn.discordapp.com/attachments/781164873458778133/781907784400633856/Leaderboard.png");
                 })
                 .WithDescription(output)
                 .WithFooter(((SocketGuildChannel)message.Channel).Guild.Name)
