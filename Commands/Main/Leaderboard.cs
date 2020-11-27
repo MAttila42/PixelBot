@@ -11,7 +11,7 @@ namespace PixelBot.Commands.Main
         {
             "leaderboard",
             "lb",
-            "top10",
+            "top5",
             "top"
         };
         public async static void DoCommand(SocketMessage message)
@@ -22,7 +22,7 @@ namespace PixelBot.Commands.Main
             string output = "";
             byte counter = 1;
 
-            foreach (var i in members.OrderByDescending(x => x.XP).Take(10))
+            foreach (var i in members.OrderByDescending(x => x.XP).Take(5))
             {
                 switch (counter)
                 {
