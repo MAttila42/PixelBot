@@ -35,7 +35,7 @@ namespace PixelBot.Commands.Xp
                 return;
             var members = Members.PullData();
             int xp;
-            int memberIndex = Members.GetMemberIndex(message, members, id.ToString());
+            int memberIndex = Members.GetMemberIndex(members, id.ToString());
             if (memberIndex == -1)
             {
                 memberIndex = members.Count();
@@ -51,7 +51,7 @@ namespace PixelBot.Commands.Xp
             List<Members> orderedMembers = new List<Members>();
             foreach (var i in members.OrderByDescending(x => x.XP))
                 orderedMembers.Add(i);
-            int position = Members.GetMemberIndex(message, orderedMembers, id.ToString()) + 1;
+            int position = Members.GetMemberIndex(orderedMembers, id.ToString()) + 1;
             int percent = (int)((double)position / members.Count() * 100);
 
             while (partXp >= rankup)

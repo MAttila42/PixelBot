@@ -38,7 +38,7 @@ namespace PixelBot.Json
         /// <param name="list"></param>
         /// <param name="user">ID, Név#0000, Név</param>
         /// <returns></returns>
-        public static int GetMemberIndex(SocketMessage message, List<Members> list, string user) => list.IndexOf(list.Find(x => x.ID == Program.GetUserId(user)));
+        public static int GetMemberIndex(List<Members> list, string user) => list.IndexOf(list.Find(x => x.ID == Program.GetUserId(user)));
 
         /// <summary>
         /// Ez a sztupid Json deserialize miatt kell. Használd a másik konstruktort!
