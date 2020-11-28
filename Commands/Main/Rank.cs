@@ -20,13 +20,24 @@ namespace PixelBot.Commands.Main
         {
             await Program.Log("command", message);
 
+            string[] m = message.Content.Split();
+            ulong id = message.Author.Id;
+            if (m.Length == 2)
+                id = Program.GetUserId(message, m[1]);
+            if (m.Length > 2)
+            {
+                await message.Channel.SendMessageAsync("❌ Too many parameters!");
+                return;
+            }
+            if (id == 0)
+                return;
             var members = Members.PullData();
             int xp;
-            int memberIndex = Members.GetMemberIndex(message, members, message.Author.Id.ToString());
+            int memberIndex = Members.GetMemberIndex(message, members, id.ToString());
             if (memberIndex == -1)
             {
                 memberIndex = members.Count();
-                members.Add(new Members(message.Author.Id));
+                members.Add(new Members(id));
             }
             xp = members[memberIndex].XP;
             string progressBar = "";
@@ -38,7 +49,7 @@ namespace PixelBot.Commands.Main
             List<Members> orderedMembers = new List<Members>();
             foreach (var i in members.OrderByDescending(x => x.XP))
                 orderedMembers.Add(i);
-            int position = Members.GetMemberIndex(message, orderedMembers, message.Author.Id.ToString()) + 1;
+            int position = Members.GetMemberIndex(message, orderedMembers, id.ToString()) + 1;
             int percent = (int)((double)position / members.Count() * 100);
 
             while (partXp >= rankup)
@@ -60,12 +71,12 @@ namespace PixelBot.Commands.Main
                 .WithAuthor(author =>
                 {
                     author
-                        .WithName(message.Author.Username)
+                        .WithName(Program._client.GetUser(id).Username)
                         .WithIconUrl("https://cdn.discordapp.com/attachments/781164873458778133/781906608376381470/XP.png");
                 })
                 .WithDescription($":trophy: Position: #**{position}** (Top **{percent}**%)\n:beginner: XP: **{xp}** /{totalXpNeeded}\n:medal: Rank: **{rank}**\n\nProgress:\n`{progressBar}`")
                 .WithFooter(((SocketGuildChannel)message.Channel).Guild.Name)
-                .WithThumbnailUrl(message.Author.GetAvatarUrl())
+                .WithThumbnailUrl(Program._client.GetUser(id).GetAvatarUrl())
                 .WithColor(new Color(0xFFCC00)).Build();
             await message.Channel.SendMessageAsync(
                 null,
