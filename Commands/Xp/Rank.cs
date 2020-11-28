@@ -4,7 +4,7 @@ using Discord;
 using Discord.WebSocket;
 using PixelBot.Json;
 
-namespace PixelBot.Commands.Main
+namespace PixelBot.Commands.Xp
 {
     class Rank
     {
@@ -16,14 +16,16 @@ namespace PixelBot.Commands.Main
             "xp",
             "szint"
         };
-        public async static void DoCommand(SocketMessage message)
+        public async static void DoCommand()
         {
-            await Program.Log("command", message);
+            var message = Recieved.Message;
+
+            await Program.Log("command");
 
             string[] m = message.Content.Split();
             ulong id = message.Author.Id;
             if (m.Length == 2)
-                id = Program.GetUserId(message, m[1]);
+                id = Program.GetUserId(m[1]);
             if (m.Length > 2)
             {
                 await message.Channel.SendMessageAsync("❌ Too many parameters!");

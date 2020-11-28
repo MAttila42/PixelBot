@@ -1,38 +1,26 @@
-﻿using System;
-using System.Linq;
-using Discord.WebSocket;
+﻿using System.Collections.Generic;
 using PixelBot.Json;
 
 namespace PixelBot.Commands.Dev
 {
     public class Test
     {
+        public static List<ulong> AllowedRoles =
+            new List<ulong>(BaseConfig.GetConfig().Roles.Admin);
+
         public static string[] Aliases =
         {
             "test",
             "teszt"
         };
-        public static bool HasPerm(SocketMessage message)
+
+        public static async void DoCommand()
         {
-            bool hasPerm = false;
-            foreach (var i in (message.Author as SocketGuildUser).Roles)
-                if (BaseConfig.GetConfig().Roles.Admin.Contains(i.Id))
-                {
-                    hasPerm = true;
-                    break;
-                }
-            return hasPerm;
-        }
+            var message = Recieved.Message;
 
-        public static async void DoCommand(SocketMessage message)
-        {
-            await Program.Log("command", message);
+            await Program.Log("command");
 
-            string output = "";
-            for (int i = 0; i < 2000; i++)
-                output += "a";
-
-            await message.Channel.SendMessageAsync(output);
+            await message.Channel.SendMessageAsync($"ping||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||{message.Author.Mention}");
         }
     }
 }

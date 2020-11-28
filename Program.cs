@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,10 +10,14 @@ using PixelBot.Json;
 using PixelBot.Events;
 using PixelBot.Commands.Dev;
 using PixelBot.Commands.Fun;
-using PixelBot.Commands.Main;
+using PixelBot.Commands.Xp;
 
 namespace PixelBot
 {
+    public class Recieved
+    {
+        public static SocketMessage Message;
+    }
     class Program
     {
         public static DiscordSocketClient _client;
@@ -39,7 +44,10 @@ namespace PixelBot
         {
             if (message.Author.IsBot)
                 return Task.CompletedTask;
-            Xp.DoEvent(message);
+
+            Recieved.Message = message;
+
+            Xp.DoEvent();
 
             return Task.CompletedTask;
         }
@@ -51,16 +59,16 @@ namespace PixelBot
             string command = firstWord.Substring(1, firstWord.Length - 1).ToLower();
 
             // Dev
-            if (Test.Aliases.Contains(command) && Test.HasPerm(message))
-                Test.DoCommand(message);
+            if (Test.Aliases.Contains(command) && HasPerm(Test.AllowedRoles))
+                Test.DoCommand();
             // Fun
             if (Minesweeper.Aliases.Contains(command))
-                Minesweeper.DoCommand(message);
+                Minesweeper.DoCommand();
             // Main
             if (Leaderboard.Aliases.Contains(command))
-                Leaderboard.DoCommand(message);
+                Leaderboard.DoCommand();
             if (Rank.Aliases.Contains(command))
-                Rank.DoCommand(message);
+                Rank.DoCommand();
 
             return Task.CompletedTask;
         }
@@ -69,10 +77,10 @@ namespace PixelBot
         /// Meghatározható típusú logolás a terminálba és a BaseConfigban beállított szobákba.
         /// </summary>
         /// <param name="mode">command, rankup</param>
-        /// <param name="message"></param>
         /// <returns></returns>
-        public static async Task Log(string mode, SocketMessage message)
+        public static async Task Log(string mode)
         {
+            var message = Recieved.Message;
             Console.Write(DateTime.Now.ToString("yyyy.MM.dd. HH:mm:ss") + " ");
             string output = "";
             switch (mode)
@@ -93,13 +101,29 @@ namespace PixelBot
             Console.WriteLine(output);
         }
         /// <summary>
+        /// Ellenőrzi, hogy az üzenetküldőnek van-e megfelelő rangja
+        /// </summary>
+        /// <param name="allowedRoles"></param>
+        /// <returns></returns>
+        public static bool HasPerm(List<ulong> allowedRoles)
+        {
+            bool hasPerm = false;
+            foreach (var role in (Recieved.Message.Author as SocketGuildUser).Roles)
+                if (allowedRoles.Contains(role.Id))
+                {
+                    hasPerm = true;
+                    break;
+                }
+            return hasPerm;
+        }
+        /// <summary>
         /// ID, ping, név alapján megkeresi a keresett felhasználót és visszaadja az ID-jét.
         /// </summary>
-        /// <param name="message"></param>
         /// <param name="inputName"></param>
         /// <returns></returns>
-        public static ulong GetUserId(SocketMessage message, string inputName)
+        public static ulong GetUserId(string inputName)
         {
+            var message = Recieved.Message;
             ulong id = 0;
             try
             {
