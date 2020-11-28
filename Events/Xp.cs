@@ -25,7 +25,7 @@ namespace PixelBot.Events
                 return;
 
             var members = Members.PullData();
-            int memberIndex = Members.GetMemberIndex(message, members, message.Author.Id.ToString());
+            int memberIndex = Members.GetMemberIndex(members, message.Author.Id.ToString());
             if (memberIndex == -1)
             {
                 memberIndex = members.Count();
