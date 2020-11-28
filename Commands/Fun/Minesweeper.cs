@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Discord.WebSocket;
 
 namespace PixelBot.Commands.Fun
 {
@@ -16,9 +15,11 @@ namespace PixelBot.Commands.Fun
             "ak"
         };
 
-        public static async void DoCommand(SocketMessage message)
+        public static async void DoCommand()
         {
-            await Program.Log("command", message);
+            var message = Recieved.Message;
+
+            await Program.Log("command");
 
             Random r = new Random();
             int row = r.Next(6, 10);

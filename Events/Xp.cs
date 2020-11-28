@@ -8,8 +8,9 @@ namespace PixelBot.Events
 {
     public class Xp
     {
-        public async static void DoEvent(SocketMessage message)
+        public async static void DoEvent()
         {
+            var message = Recieved.Message;
             bool isSpam = false;
             try
             {
@@ -44,7 +45,7 @@ namespace PixelBot.Events
 
             if (rank > members[memberIndex].Rank)
             {
-                await Program.Log("rankup", message);
+                await Program.Log("rankup");
 
                 var embed = new EmbedBuilder()
                     .WithAuthor(author =>

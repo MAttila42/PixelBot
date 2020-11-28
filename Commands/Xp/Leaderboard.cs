@@ -3,7 +3,7 @@ using Discord;
 using Discord.WebSocket;
 using PixelBot.Json;
 
-namespace PixelBot.Commands.Main
+namespace PixelBot.Commands.Xp
 {
     class Leaderboard
     {
@@ -14,9 +14,11 @@ namespace PixelBot.Commands.Main
             "top5",
             "top"
         };
-        public async static void DoCommand(SocketMessage message)
+        public async static void DoCommand()
         {
-            await Program.Log("command", message);
+            var message = Recieved.Message;
+
+            await Program.Log("command");
 
             var members = Members.PullData();
             string output = "";
