@@ -101,7 +101,12 @@ namespace PixelBot
         public static ulong GetUserId(SocketMessage message, string inputName)
         {
             ulong id = 0;
-            try { id = ulong.Parse(inputName); }
+            try
+            {
+                id = ulong.Parse(inputName);
+                if (_client.GetUser(id) == null)
+                    throw new Exception();
+            }
             catch (Exception)
             {
                 try { id = message.MentionedUsers.First().Id; }
