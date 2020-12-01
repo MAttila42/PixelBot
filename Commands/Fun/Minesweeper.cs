@@ -17,10 +17,9 @@ namespace PixelBot.Commands.Fun
 
         public static async void DoCommand()
         {
-            var message = Recieved.Message;
-
             await Program.Log("command");
 
+            var message = Recieved.Message;
             Random r = new Random();
             int row = r.Next(6, 10);
             int column = r.Next(6, 10);

@@ -18,10 +18,9 @@ namespace PixelBot.Commands.Xp
         };
         public async static void DoCommand()
         {
-            var message = Recieved.Message;
-
             await Program.Log("command");
 
+            var message = Recieved.Message;
             string[] m = message.Content.Split();
             ulong id = message.Author.Id;
             if (m.Length == 2)

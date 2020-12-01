@@ -78,7 +78,7 @@ namespace PixelBot
         /// </summary>
         /// <param name="mode">command, rankup</param>
         /// <returns></returns>
-        public static async Task Log(string mode)
+        public async static Task Log(string mode)
         {
             var message = Recieved.Message;
             Console.Write(DateTime.Now.ToString("yyyy.MM.dd. HH:mm:ss") + " ");
@@ -97,7 +97,8 @@ namespace PixelBot
                     return;
             }
             foreach (var id in BaseConfig.GetConfig().Channels.BotTerminal)
-                await ((IMessageChannel)_client.GetChannel(id)).SendMessageAsync(output);
+                try { await ((IMessageChannel)_client.GetChannel(id)).SendMessageAsync(output); }
+                catch (Exception) { }
             Console.WriteLine(output);
         }
         /// <summary>
@@ -107,14 +108,21 @@ namespace PixelBot
         /// <returns></returns>
         public static bool HasPerm(List<ulong> allowedRoles)
         {
-            bool hasPerm = false;
             foreach (var role in (Recieved.Message.Author as SocketGuildUser).Roles)
-                if (allowedRoles.Contains(role.Id))
-                {
-                    hasPerm = true;
-                    break;
-                }
-            return hasPerm;
+                if (allowedRoles.Contains(role.Id) ||
+                    BaseConfig.GetConfig().Roles.Admin.Contains(role.Id))
+                    return true;
+            return false;
+        }
+        /// <summary>
+        /// Ellenőrzi, hogy az üzenet bot szobába volt-e küldve.
+        /// </summary>
+        /// <returns></returns>
+        public static bool BotChannel()
+        {
+            if (BaseConfig.GetConfig().Channels.BotChannel.Contains(Recieved.Message.Channel.Id))
+                return true;
+            return false;
         }
         /// <summary>
         /// ID, ping, név alapján megkeresi a keresett felhasználót és visszaadja az ID-jét.

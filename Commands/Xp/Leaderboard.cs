@@ -16,10 +16,9 @@ namespace PixelBot.Commands.Xp
         };
         public async static void DoCommand()
         {
-            var message = Recieved.Message;
-
             await Program.Log("command");
 
+            var message = Recieved.Message;
             var members = Members.PullData();
             string output = "";
             byte counter = 1;
