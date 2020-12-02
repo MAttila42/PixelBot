@@ -18,10 +18,16 @@ namespace PixelBot.Commands.Dev
         public async static void DoCommand()
         {
             var message = Recieved.Message;
-            string output;
-            try { output = "pwd".Bash(); }
-            catch (Exception) { output = "❌ Can't find bash."; }
-            await message.Channel.SendMessageAsync(output);
+            try { "cd ..".Bash(); }
+            catch (Exception) { await message.Channel.SendMessageAsync("❌ Can't find bash!"); }
+            await message.Channel.SendMessageAsync("Pulling from git...");
+            "git pull".Bash();
+            await message.Channel.SendMessageAsync("Building...");
+            "dotnet build -o build".Bash();
+            await message.Channel.SendMessageAsync("Restarting...");
+            "cd build".Bash();
+            "dotnet PixelBot.dll".Bash();
+            Environment.Exit(0);
         }
     }
 
