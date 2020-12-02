@@ -54,7 +54,6 @@ namespace PixelBot.Commands.Dev
             };
             process.Start();
             string result = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
             return result;
         }
     }
