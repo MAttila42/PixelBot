@@ -59,6 +59,8 @@ namespace PixelBot
             string command = firstWord.Substring(1, firstWord.Length - 1).ToLower();
 
             // Dev
+            if (Restart.Aliases.Contains(command) && HasPerm(Restart.AllowedRoles))
+                Restart.DoCommand();
             if (Test.Aliases.Contains(command) && HasPerm(Test.AllowedRoles))
                 Test.DoCommand();
             // Fun
