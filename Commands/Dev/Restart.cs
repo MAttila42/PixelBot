@@ -21,9 +21,9 @@ namespace PixelBot.Commands.Dev
             var message = Recieved.Message;
             await message.Channel.SendMessageAsync("Restarting bot... (This may take a few moments)");
             string commands =
-                "git pull" +
-                "dotnet build -o build" +
-                "cd build" +
+                "git pull\n" +
+                "dotnet build -o build\n" +
+                "cd build\n" +
                 "dotnet PixelBot.dll";
             try { commands.Bash(); }
             catch (Exception) { await message.Channel.SendMessageAsync("❌ Can't find bash!"); }
