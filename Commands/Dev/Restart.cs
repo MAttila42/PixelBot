@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Diagnostics;
 using PixelBot.Json;
 
@@ -18,15 +19,14 @@ namespace PixelBot.Commands.Dev
         public async static void DoCommand()
         {
             var message = Recieved.Message;
-            try { "cd ..".Bash(); }
+            await message.Channel.SendMessageAsync("Restarting bot... (This may take a few moments)");
+            string commands =
+                "git pull" +
+                "dotnet build -o build" +
+                "cd build" +
+                "dotnet PixelBot.dll";
+            try { commands.Bash(); }
             catch (Exception) { await message.Channel.SendMessageAsync("❌ Can't find bash!"); }
-            await message.Channel.SendMessageAsync("Pulling from git...");
-            "git pull".Bash();
-            await message.Channel.SendMessageAsync("Building...");
-            "dotnet build -o build".Bash();
-            await message.Channel.SendMessageAsync("Restarting...");
-            "cd build".Bash();
-            "dotnet PixelBot.dll".Bash();
             Environment.Exit(0);
         }
     }
