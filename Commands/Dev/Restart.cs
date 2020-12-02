@@ -21,6 +21,7 @@ namespace PixelBot.Commands.Dev
             var message = Recieved.Message;
             await message.Channel.SendMessageAsync("Restarting bot... (This may take a few moments)");
             string commands =
+                "cd ..\n" + 
                 "git pull\n" +
                 "dotnet build -o build\n" +
                 "cd build\n" +
