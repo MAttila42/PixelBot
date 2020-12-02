@@ -28,7 +28,8 @@ namespace PixelBot.Commands.Dev
                 "dotnet PixelBot.dll";
             try { commands.Bash(); }
             catch (Exception) { await message.Channel.SendMessageAsync("❌ Can't find bash!"); }
-            Environment.Exit(0);
+            await message.Channel.SendMessageAsync("Done.");
+            await Task.Delay(1000).ContinueWith(t => Environment.Exit(0));
         }
     }
 
