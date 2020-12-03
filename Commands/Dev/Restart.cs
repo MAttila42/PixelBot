@@ -18,15 +18,15 @@ namespace PixelBot.Commands.Dev
         public async static void DoCommand()
         {
             var message = Recieved.Message;
-            await message.Channel.SendMessageAsync("Restarting bot... (This may take a few moments)");
-            string commands =
-                "cd ..\n" + 
-                "git pull\n" +
-                "dotnet build -o build\n" +
-                "cd build\n" +
-                "dotnet PixelBot.dll";
             try
             {
+                await message.Channel.SendMessageAsync("Restarting bot... (This may take a few moments)");
+                string commands =
+                    "cd ..\n" +
+                    "git pull\n" +
+                    "dotnet build -o build\n" +
+                    "cd build\n" +
+                    "dotnet PixelBot.dll";
                 var process = new ProcessStartInfo
                 {
                     FileName = "/bin/bash",
