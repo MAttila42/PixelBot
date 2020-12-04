@@ -55,19 +55,24 @@ namespace PixelBot
             string firstWord = message.Content.Split()[0];
             string command = firstWord.Substring(1, firstWord.Length - 1).ToLower();
 
-            // Dev
-            if (Restart.Aliases.Contains(command) && BotChannel() && HasPerm(Restart.AllowedRoles))
-                Restart.DoCommand();
-            if (Test.Aliases.Contains(command) && BotChannel() && HasPerm(Test.AllowedRoles))
-                Test.DoCommand();
-            // Fun
-            if (Minesweeper.Aliases.Contains(command) && BotChannel())
-                Minesweeper.DoCommand();
-            // Main
-            if (Leaderboard.Aliases.Contains(command) && BotChannel())
-                Leaderboard.DoCommand();
-            if (Rank.Aliases.Contains(command) && BotChannel())
-                Rank.DoCommand();
+            if (BotChannel())
+            {
+                // Dev
+                if (Eval.Aliases.Contains(command) && HasPerm(Eval.AllowedRoles))
+                    Eval.DoCommand();
+                if (Restart.Aliases.Contains(command) && HasPerm(Restart.AllowedRoles))
+                    Restart.DoCommand();
+                if (Test.Aliases.Contains(command) && HasPerm(Test.AllowedRoles))
+                    Test.DoCommand();
+                // Fun
+                if (Minesweeper.Aliases.Contains(command))
+                    Minesweeper.DoCommand();
+                // Main
+                if (Leaderboard.Aliases.Contains(command))
+                    Leaderboard.DoCommand();
+                if (Rank.Aliases.Contains(command))
+                    Rank.DoCommand();
+            }
 
             return Task.CompletedTask;
         }
