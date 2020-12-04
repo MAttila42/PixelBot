@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
 using PixelBot.Json;
 
 namespace PixelBot.Commands.Dev
@@ -10,16 +9,14 @@ namespace PixelBot.Commands.Dev
         public static List<ulong> AllowedRoles =
             new List<ulong>(BaseConfig.GetConfig().Roles.Admin);
 
-        public static string[] Aliases =
-        {
-            "eval"
-        };
+        public static string[] Aliases = { "eval" };
 
         public async static void DoCommand()
         {
             await Program.Log("command");
 
             var message = Recieved.Message;
+            var response = await message.Channel.SendMessageAsync("Evaluating...");
             string code;
             try { code = message.Content.Substring(6, message.Content.Length - 6); }
             catch (Exception)
@@ -28,9 +25,9 @@ namespace PixelBot.Commands.Dev
                 return;
             }
             string result;
-            try { result = CSharpScript.EvaluateAsync(code).Result.ToString(); }
+            try { result = Z.Expressions.Eval.Execute(code).ToString(); }
             catch (Exception e) { result = e.Message; }
-            await message.Channel.SendMessageAsync(result);
+            await response.ModifyAsync(m => m.Content = result);
         }
     }
 }
