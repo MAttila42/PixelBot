@@ -27,7 +27,7 @@ namespace PixelBot.Commands.Dev
             string result;
             try { result = Z.Expressions.Eval.Execute(code).ToString(); }
             catch (Exception e) { result = e.Message; }
-            await response.ModifyAsync(m => m.Content = result);
+            await response.ModifyAsync(m => m.Content = $"```{result}```");
         }
     }
 }
