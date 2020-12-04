@@ -10,14 +10,20 @@ namespace PixelBot.Commands.Dev
         public static List<ulong> AllowedRoles =
             new List<ulong>(BaseConfig.GetConfig().Roles.Admin);
 
-        public static string[] Aliases =
-        {
-            "restart"
-        };
+        public static string[] Aliases = { "restart" };
 
         public async static void DoCommand()
         {
             var message = Recieved.Message;
+            try
+            {
+                if (message.Content.Split()[1] == "exit")
+                {
+                    await message.Channel.SendMessageAsync("Shutting down...");
+                    Environment.Exit(0);
+                }
+            }
+            catch (Exception) { }
             try
             {
                 await message.Channel.SendMessageAsync("Restarting bot... (This may take a few moments)");
