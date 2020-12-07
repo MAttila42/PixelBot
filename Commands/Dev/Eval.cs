@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Timers;
+using Discord;
 using PixelBot.Json;
 
 namespace PixelBot.Commands.Dev
@@ -12,19 +13,29 @@ namespace PixelBot.Commands.Dev
 
         public static string[] Aliases = { "eval" };
 
+        static IUserMessage response;
+        static string result;
+        static int counter;
+        static Timer timer;
+
         public async static void DoCommand()
         {
             await Program.Log("command");
 
             var message = Recieved.Message;
+            response = await message.Channel.SendMessageAsync("Evaluating...");
             string code;
             try { code = message.Content.Substring(6, message.Content.Length - 6); }
             catch (Exception)
             {
-                await message.Channel.SendMessageAsync("❌ Add code to evaluate!");
+                await response.ModifyAsync(m => m.Content = "❌ Add code to evaluate!");
                 return;
             }
-            var response = await message.Channel.SendMessageAsync("Evaluating...");
+            if (code.Contains("@"))
+            {
+                await response.ModifyAsync(m => m.Content = "❌ The code contains a blacklisted character: `@`");
+                return;
+            }
             result = null;
             counter = 0;
             try
@@ -39,20 +50,17 @@ namespace PixelBot.Commands.Dev
             if (result.Length <= 2000)
                 await response.ModifyAsync(m => m.Content = $"```{result}```");
             else
-                await message.Channel.SendMessageAsync("❌ 2000+ characters!");
+                await response.ModifyAsync(m => m.Content = "❌ 2000+ characters!");
             timer.Enabled = false;
             timer.Stop();
             timer.Dispose();
         }
 
-        static string result;
-        static int counter;
-        static Timer timer;
         static void CheckIfTimedOut(object source, ElapsedEventArgs e)
         {
             if (counter++ > 30 && result == null)
             {
-                Recieved.Message.Channel.SendMessageAsync("❌ Timed out!");
+                response.ModifyAsync(m => m.Content = "❌ Timed out!");
                 timer.Enabled = false;
                 timer.Stop();
                 timer.Dispose();
