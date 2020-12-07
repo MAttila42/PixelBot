@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Timers;
 using PixelBot.Json;
 
 namespace PixelBot.Commands.Dev
@@ -24,10 +25,35 @@ namespace PixelBot.Commands.Dev
                 await message.Channel.SendMessageAsync("❌ Add code to evaluate!");
                 return;
             }
-            string result;
-            try { result = Z.Expressions.Eval.Execute(code).ToString(); }
+            result = null;
+            counter = 0;
+            try
+            {
+                timer = new Timer(1000);
+                timer.Elapsed += CheckIfTimedOut;
+                timer.AutoReset = true;
+                timer.Enabled = true;
+                result = Z.Expressions.Eval.Execute(code).ToString();
+            }
             catch (Exception e) { result = e.Message; }
             await response.ModifyAsync(m => m.Content = $"```{result}```");
+            timer.Enabled = false;
+            timer.Stop();
+            timer.Dispose();
+        }
+
+        static string result;
+        static int counter;
+        static Timer timer;
+        static void CheckIfTimedOut(object source, ElapsedEventArgs e)
+        {
+            if (counter++ > 30 && result == null)
+            {
+                Recieved.Message.Channel.SendMessageAsync("❌ Timed out!");
+                timer.Enabled = false;
+                timer.Stop();
+                timer.Dispose();
+            }
         }
     }
 }
