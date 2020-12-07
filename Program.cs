@@ -58,7 +58,7 @@ namespace PixelBot
             if (BotChannel())
             {
                 // Dev
-                if (Eval.Aliases.Contains(command) && HasPerm(Eval.AllowedRoles))
+                if (Eval.Aliases.Contains(command))
                     Eval.DoCommand();
                 if (Restart.Aliases.Contains(command) && HasPerm(Restart.AllowedRoles))
                     Restart.DoCommand();

@@ -7,8 +7,8 @@ namespace PixelBot.Commands.Dev
 {
     class Eval
     {
-        public static List<ulong> AllowedRoles =
-            new List<ulong>(BaseConfig.GetConfig().Roles.Admin);
+        //public static List<ulong> AllowedRoles =
+        //    new List<ulong>(BaseConfig.GetConfig().Roles.Admin);
 
         public static string[] Aliases = { "eval" };
 
