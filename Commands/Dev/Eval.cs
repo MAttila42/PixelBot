@@ -17,7 +17,6 @@ namespace PixelBot.Commands.Dev
             await Program.Log("command");
 
             var message = Recieved.Message;
-            var response = await message.Channel.SendMessageAsync("Evaluating...");
             string code;
             try { code = message.Content.Substring(6, message.Content.Length - 6); }
             catch (Exception)
@@ -25,6 +24,7 @@ namespace PixelBot.Commands.Dev
                 await message.Channel.SendMessageAsync("❌ Add code to evaluate!");
                 return;
             }
+            var response = await message.Channel.SendMessageAsync("Evaluating...");
             result = null;
             counter = 0;
             try
@@ -36,7 +36,10 @@ namespace PixelBot.Commands.Dev
                 result = Z.Expressions.Eval.Execute(code).ToString();
             }
             catch (Exception e) { result = e.Message; }
-            await response.ModifyAsync(m => m.Content = $"```{result}```");
+            if (result.Length <= 2000)
+                await response.ModifyAsync(m => m.Content = $"```{result}```");
+            else
+                await message.Channel.SendMessageAsync("❌ 2000+ characters!");
             timer.Enabled = false;
             timer.Stop();
             timer.Dispose();
