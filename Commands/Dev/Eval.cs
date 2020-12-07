@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Timers;
 using Discord;
-using PixelBot.Json;
 
 namespace PixelBot.Commands.Dev
 {
     class Eval
     {
-        //public static List<ulong> AllowedRoles =
-        //    new List<ulong>(BaseConfig.GetConfig().Roles.Admin);
-
         public static string[] Aliases = { "eval" };
 
         static IUserMessage response;
@@ -23,17 +18,12 @@ namespace PixelBot.Commands.Dev
             await Program.Log("command");
 
             var message = Recieved.Message;
-            response = await message.Channel.SendMessageAsync("Evaluating...");
+            response = await message.Channel.SendMessageAsync("Evaluating...", allowedMentions: AllowedMentions.None);
             string code;
             try { code = message.Content.Substring(6, message.Content.Length - 6); }
             catch (Exception)
             {
                 await response.ModifyAsync(m => m.Content = "❌ Add code to evaluate!");
-                return;
-            }
-            if (code.Contains("@"))
-            {
-                await response.ModifyAsync(m => m.Content = "❌ The code contains a blacklisted character: `@`");
                 return;
             }
             result = null;
