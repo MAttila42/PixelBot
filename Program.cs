@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 using Discord;
 using Discord.WebSocket;
@@ -230,24 +229,4 @@ namespace PixelBot
         }
     }
     public class Recieved { public static SocketMessage Message; }
-    public static class ShellHelper
-    {
-        public static string Bash(this string cmd)
-        {
-            var process = new Process()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "/bin/bash",
-                    Arguments = $"-c \"{cmd.Replace("\"", "\\\"")}\"",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process.Start();
-            process.WaitForExit();
-            return process.StandardOutput.ReadToEnd();
-        }
-    }
 }

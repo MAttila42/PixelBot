@@ -1,12 +1,21 @@
 ﻿using System;
+using System.IO;
+using System.Diagnostics;
 using System.Timers;
+using Microsoft.Scripting;
+using Microsoft.Scripting.Hosting;
+using IronPython.Hosting;
 using Discord;
 
 namespace PixelBot.Commands.Dev
 {
     class Eval
     {
-        public static string[] Aliases = { "eval" };
+        public static string[] Aliases =
+        {
+            "evaluate",
+            "eval"
+        };
 
         static IUserMessage response;
         static string result;
@@ -18,9 +27,10 @@ namespace PixelBot.Commands.Dev
             await Program.Log("command");
 
             var message = Recieved.Message;
+            string[] m = message.Content.Split();
             response = await message.Channel.SendMessageAsync("Evaluating...", allowedMentions: AllowedMentions.None);
             string code;
-            try { code = message.Content.Substring(6, message.Content.Length - 6); }
+            try { code = message.Content.Substring(m[0].Length + m[1].Length + 2, message.Content.Length - m[0].Length - m[1].Length - 2); }
             catch (Exception)
             {
                 await response.ModifyAsync(m => m.Content = "❌ Add code to evaluate!");
@@ -34,7 +44,23 @@ namespace PixelBot.Commands.Dev
                 timer.Elapsed += CheckIfTimedOut;
                 timer.AutoReset = true;
                 timer.Enabled = true;
-                result = Z.Expressions.Eval.Execute(code).ToString();
+                switch (m[1])
+                {
+                    case "cs":
+                        result = Z.Expressions.Eval.Execute(code).ToString();
+                        break;
+                    case "py":
+                        var py = new PythonScript();
+                        result = py.RunFromString<string>(code, "output");
+                        break;
+
+                    default:
+                        await response.ModifyAsync(m => m.Content = "❌ Unkown language!");
+                        timer.Enabled = false;
+                        timer.Stop();
+                        timer.Dispose();
+                        return;
+                }
             }
             catch (Exception e) { result = e.Message; }
             if (result.Length <= 2000)
@@ -55,6 +81,20 @@ namespace PixelBot.Commands.Dev
                 timer.Stop();
                 timer.Dispose();
             }
+        }
+    }
+
+    public class PythonScript
+    {
+        private ScriptEngine _engine;
+        public PythonScript() { _engine = Python.CreateEngine(); }
+        public TResult RunFromString<TResult>(string code, string variableName)
+        {
+            ScriptSource source = _engine.CreateScriptSourceFromString(code, SourceCodeKind.Statements);
+            CompiledCode cc = source.Compile();
+            ScriptScope scope = _engine.CreateScope();
+            cc.Execute(scope);
+            return scope.GetVariable<TResult>(variableName);
         }
     }
 }
