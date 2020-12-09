@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Diagnostics;
 using System.Timers;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
@@ -9,7 +7,7 @@ using Discord;
 
 namespace PixelBot.Commands.Dev
 {
-    class Eval
+    class Evaluate
     {
         public static string[] Aliases =
         {
@@ -52,6 +50,9 @@ namespace PixelBot.Commands.Dev
                     case "py":
                         var py = new PythonScript();
                         result = py.RunFromString<string>(code, "output");
+                        break;
+                    case "js":
+                        result = ScriptEngineJs.Eval("jscript", code).ToString();
                         break;
 
                     default:
