@@ -9,6 +9,9 @@ namespace PixelBot.Commands.Dev
 {
     class Evaluate
     {
+        public static List<ulong> AllowedRoles =
+            new List<ulong>(BaseConfig.GetConfig().Roles.Admin);
+
         public static string[] Aliases =
         {
             "evaluate",
