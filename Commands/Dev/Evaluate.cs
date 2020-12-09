@@ -5,6 +5,7 @@ using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using IronPython.Hosting;
 using Discord;
+using PixelBot.Json;
 
 namespace PixelBot.Commands.Dev
 {
