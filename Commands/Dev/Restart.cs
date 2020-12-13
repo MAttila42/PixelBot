@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using PixelBot.Json;
 
-namespace PixelBot.Commands.Dev
+namespace PixelBot.Commands
 {
     class Restart
     {

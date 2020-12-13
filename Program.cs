@@ -8,9 +8,7 @@ using Discord.WebSocket;
 
 using PixelBot.Json;
 using PixelBot.Events;
-using PixelBot.Commands.Dev;
-using PixelBot.Commands.Fun;
-using PixelBot.Commands.Xp;
+using PixelBot.Commands;
 
 namespace PixelBot
 {

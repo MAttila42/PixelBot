@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace PixelBot.Commands.Fun
+namespace PixelBot.Commands
 {
     class Minesweeper
     {

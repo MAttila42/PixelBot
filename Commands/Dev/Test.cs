@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Discord;
 using PixelBot.Json;
 
-namespace PixelBot.Commands.Dev
+namespace PixelBot.Commands
 {
     public class Test
     {

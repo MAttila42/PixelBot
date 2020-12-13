@@ -7,7 +7,7 @@ using IronPython.Hosting;
 using Discord;
 using PixelBot.Json;
 
-namespace PixelBot.Commands.Dev
+namespace PixelBot.Commands
 {
     class Evaluate
     {

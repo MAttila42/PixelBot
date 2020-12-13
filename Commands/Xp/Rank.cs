@@ -4,7 +4,7 @@ using Discord;
 using Discord.WebSocket;
 using PixelBot.Json;
 
-namespace PixelBot.Commands.Xp
+namespace PixelBot.Commands
 {
     class Rank
     {
